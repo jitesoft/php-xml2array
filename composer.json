@@ -1,8 +1,8 @@
 {
-  "name": "jitesoft/xml2array",
-  "description": "Simple lib to convert a xml file into a array of Elements.",
+  "name": "jitesoft/xml2struct",
+  "description": "Simple lib to convert a xml file into a tree structure of nodes, an array structure or a json string.",
   "minimum-stability": "stable",
-  "keywords": ["xml", "parsing", "array"],
+  "keywords": ["xml", "parsing", "convert", "array"],
   "license": "MIT",
   "homepage": "https://github.com/jitesoft/php-xml2array",
   "version": "1.0.0",

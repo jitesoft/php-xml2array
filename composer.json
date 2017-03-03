@@ -1,0 +1,33 @@
+{
+  "name": "jitesoft/xml2array",
+  "description": "Simple lib to convert a xml file into a array of Elements.",
+  "minimum-stability": "stable",
+  "keywords": ["xml", "parsing", "array"],
+  "license": "MIT",
+  "homepage": "https://github.com/jitesoft/php-xml2array",
+  "version": "1.0.0",
+  "authors": [
+    {
+      "name": "Johannes Tegnér",
+      "email": "johannes@jitesoft.com",
+      "role": "developer",
+      "homepage": "https://jite.eu"
+    }
+  ],
+  "require": {
+    "php": ">=7.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^6.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Jitesoft\\XML\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Jitesoft\\XML\\Tests\\": "tests/"
+    }
+  }
+}

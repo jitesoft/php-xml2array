@@ -30,8 +30,7 @@ class ParserTest extends TestCase {
       <genre>Computer</genre>
       <price>44.95</price>
       <publish_date>2000-10-01</publish_date>
-      <description>An in-depth look at creating applications 
-      with XML.</description>
+      <description>An in-depth look at creating applications with XML.</description>
    </book>
 </catalog>
 XML;
@@ -65,9 +64,7 @@ XML;
         <childlist>
             <child id="1" name="test">
                 <subchild att="abc">
-                <![CDATA[
-                    Hi.
-                ]]>
+                <![CDATA[Hi.]]>
                 </subchild>
             </child>
             <child id="2">Test!</child>
@@ -104,7 +101,7 @@ XML;
     public function testParseToJson() {
         $parser = new Parser();
         $out = $parser->parse(self::$valid, Parser::OUT_TYPE_JSON);
-        $this->assertJsonStringEqualsJsonString('{"name":"catalog","content":"","attributes":[],"children":[{"name":"book","content":"","attributes":[],"children":[{"name":"author","content":"Gambardella, Matthew","attributes":[],"children":[]},{"name":"title","content":"XML Developer\'s Guide","attributes":[],"children":[]},{"name":"genre","content":"Computer","attributes":[],"children":[]},{"name":"price","content":"44.95","attributes":[],"children":[]},{"name":"publish_date","content":"2000-10-01","attributes":[],"children":[]},{"name":"description","content":"An in-depth look at creating applications \n      with XML.","attributes":[],"children":[]}]}]}', $out);
+        $this->assertJsonStringEqualsJsonString('{"name":"catalog","content":"","attributes":[],"children":[{"name":"book","content":"","attributes":[],"children":[{"name":"author","content":"Gambardella, Matthew","attributes":[],"children":[]},{"name":"title","content":"XML Developer\'s Guide","attributes":[],"children":[]},{"name":"genre","content":"Computer","attributes":[],"children":[]},{"name":"price","content":"44.95","attributes":[],"children":[]},{"name":"publish_date","content":"2000-10-01","attributes":[],"children":[]},{"name":"description","content":"An in-depth look at creating applications with XML.","attributes":[],"children":[]}]}]}', $out);
     }
 
     public function testParseToArray() {
@@ -128,7 +125,7 @@ XML;
                             [ "name" => "genre", "content" => "Computer", "attributes" => [], "children" => [] ],
                             [ "name" => "price", "content" => "44.95", "attributes" => [], "children" => [] ],
                             [ "name" => "publish_date", "content" => "2000-10-01", "attributes" => [], "children" => [] ],
-                            [ "name" => "description", "content" => "An in-depth look at creating applications \n      with XML.", "attributes" => [], "children" => [] ]
+                            [ "name" => "description", "content" => "An in-depth look at creating applications with XML.", "attributes" => [], "children" => [] ]
                         ]
                     ]
                 ]
@@ -151,7 +148,7 @@ XML;
                         new Node("genre", "Computer", []),
                         new Node("price", "44.95", []),
                         new Node("publish_date", "2000-10-01", []),
-                        new Node("description", "An in-depth look at creating applications \n      with XML.", []),
+                        new Node("description", "An in-depth look at creating applications with XML.", []),
                     ])
                 )
             ),
@@ -164,25 +161,25 @@ XML;
         $out = $parser->parse(self::$complex);
         $this->assertInstanceOf(Node::class, $out);
 
-        $this->assertEquals(
-            new Node("complex", "", [], [
-                new Node("object", "", ["id" => "abc123"], [
-                    new Node("childlist", "", [], [
-                        new Node("child", "-", ["id" => "1"]),
-                        new Node("child", "!", ["id" => "2"]),
-                        new Node("child", "Test.", ["id" => "3"])
-                    ])
-                ]),
-                new Node("object", "", ["id" => "321cba"], [
-                    new Node("childlist", "", [], [
-                        new Node("child", "", ["id" => "1", "name" => "test"], [
-                            new Node("subchild", "\r\n                    Hi.\r\n                ", ["att" => "abc"])
-                        ]),
-                        new Node("child", "Test!", ["id" => "2"])
-                    ])
+        $expected = new Node("complex", "", [], [
+            new Node("object", "", ["id" => "abc123"], [
+                new Node("childlist", "", [], [
+                    new Node("child", "-", ["id" => "1"]),
+                    new Node("child", "!", ["id" => "2"]),
+                    new Node("child", "Test.", ["id" => "3"])
+                ])
+            ]),
+            new Node("object", "", ["id" => "321cba"], [
+                new Node("childlist", "", [], [
+                    new Node("child", "", ["id" => "1", "name" => "test"], [
+                        new Node("subchild", "Hi.", ["att" => "abc"])
+                    ]),
+                    new Node("child", "Test!", ["id" => "2"])
                 ])
             ])
-        ,$out);
+        ]);
+
+        $this->assertEquals($expected->toArray() ,$out->toArray());
     }
 
 }

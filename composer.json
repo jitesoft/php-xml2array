@@ -5,7 +5,7 @@
   "keywords": ["xml", "parsing", "convert", "array"],
   "license": "MIT",
   "homepage": "https://github.com/jitesoft/php-xml2array",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "authors": [
     {
       "name": "Johannes Tegnér",

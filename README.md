@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jitesoft/php-xml2array.svg?branch=master)](https://travis-ci.org/jitesoft/php-xml2array)
+
 # XML2Struct
 XML can be a pain... Sometimes its a lot more handy to work with a tree structure, json or an array!  
 This package was created to ease testing with xml files, so that, instead of going through

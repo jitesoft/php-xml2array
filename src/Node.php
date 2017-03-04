@@ -16,13 +16,13 @@ use InvalidArgumentException;
 class Node {
 
     /** @var string */
-    public $name;
+    private $name;
     /** @var array */
-    public $attributes;
+    private $attributes;
     /** @var string */
-    public $content;
+    private $content;
     /** @var Node[]|array */
-    public $children;
+    private $children;
 
     /**
      * Get node name.

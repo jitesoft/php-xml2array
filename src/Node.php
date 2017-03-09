@@ -81,18 +81,30 @@ class Node {
 
     /**
      * Get all children in the node.
+     * @param null|string $name Node name of the children to get, defaults to null (all).
      * @return array|Node[]
      */
-    public function getChildren(): array {
-        return $this->children;
+    public function getChildren(?string $name = null): array {
+        if ($name === null) {
+            return $this->children;
+        }
+        return array_filter($this->children, function(Node $child) use($name) {
+            return $child->getName() === $name;
+        });
     }
 
     /**
      * Get the child count.
+     * @param null|string $name Node name of the children to count, defaults to null (all).
      * @return int
      */
-    public function childCount(): int {
-        return count($this->children);
+    public function childCount(?string $name = null): int {
+        if ($name === null) {
+            return count($this->children);
+        }
+        return count(array_filter($this->children, function(Node $child) use($name) {
+            return $child->getName() === $name;
+        }));
     }
 
     /**
@@ -131,12 +143,27 @@ class Node {
      * @return Node|mixed
      * @throws OutOfBoundsException
      */
-    public function getChild(int $index) {
+    public function getChild(int $index) : ?Node {
         $childCount = $this->childCount();
         if (empty($this->children) || $index >= $childCount) {
             throw new OutOfBoundsException("Child with index $index does not exist. Index was out of bounds.");
         }
         return $this->children[$index];
+    }
+
+    /**
+     * Get first child with a given name.
+     *
+     * @param string $name
+     * @return Node|null
+     */
+    public function getChildByName(string $name) : ?Node {
+        foreach ($this->children as $child) {
+            if ($child->getName() === $name) {
+                return $child;
+            }
+        }
+        return null;
     }
 
     /**

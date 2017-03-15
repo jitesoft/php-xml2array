@@ -81,6 +81,10 @@ class Node {
 
     /**
      * Get all children in the node.
+     *
+     * Observe: If only fetching children with a given name, the keys will not be modified.
+     * This means that it will not be a indexed array (0-n) but a key value array where keys are the indexes that
+     * the nodes had in the xml.
      * @param null|string $name Node name of the children to get, defaults to null (all).
      * @return array|Node[]
      */

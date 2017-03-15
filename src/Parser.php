@@ -28,6 +28,16 @@ class Parser implements ParserInterface {
      * @return string|array|Node
      * @throws InvalidArgumentException
      */
+    public static function parseXml(string $data, $outType = self::OUT_TYPE_OBJECT) {
+        return (new Parser())->parse($data, $outType);
+    }
+
+    /**
+     * @param string $data XML as string.
+     * @param string $outType Expected out type (see constants OUT_TYPE_* for valid types).
+     * @return string|array|Node
+     * @throws InvalidArgumentException
+     */
     public function parse(string $data, $outType = self::OUT_TYPE_OBJECT) {
         switch ($outType) {
             case self::OUT_TYPE_ARRAY:

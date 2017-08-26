@@ -24,9 +24,9 @@ class NodeTest extends TestCase {
     <object id="abc123" name="testname">
         <childlist>
             <child id="1">-</child>
+            <othername>Test</othername>
             <child id="2">!</child>
             <child id="3">Test.</child>
-            <othername>Test</othername>
         </childlist>
     </object>
     <object>Text.</object>
@@ -42,7 +42,7 @@ class NodeTest extends TestCase {
     </object>
 </complex>
 XML;
-        $this->parsed = (new Parser())->parse($xml);
+        $this->parsed = Parser::parseXml($xml);
     }
 
     public function testHasAttributes() {
@@ -76,6 +76,31 @@ XML;
         $this->assertCount(0, $this->parsed->getChild(1)->getChildren());
     }
 
+    public function testGetChildrenWithPreservedKeys() {
+
+        $this->assertEquals('complex', $this->parsed->getName());
+        $child = $this->parsed->getChild(0)->getChild(0);
+        $children = $child->getChildren("child", true);
+        $this->assertCount(3, $children);
+
+        $this->assertTrue(array_key_exists(0, $children));
+        $this->assertFalse(array_key_exists(1, $children));
+        $this->assertTrue(array_key_exists(2, $children));
+        $this->assertTrue(array_key_exists(3, $children));
+
+    }
+
+    public function testGetChildrenWithoutPreservedKeys() {
+        $this->assertEquals('complex', $this->parsed->getName());
+        $child = $this->parsed->getChild(0)->getChild(0);
+        $children = $child->getChildren("child", false);
+        $this->assertCount(3, $children);
+
+        $this->assertTrue(array_key_exists(0, $children));
+        $this->assertTrue(array_key_exists(1, $children));
+        $this->assertTrue(array_key_exists(2, $children));
+    }
+
     public function testChildCount() {
         $this->assertEquals('complex', $this->parsed->getName());
         $child = $this->parsed->getChild(0)->getChild(0);
@@ -103,7 +128,7 @@ XML;
         $this->assertEquals("object", $child->getName());
         $child = $child->getChild(0);
         $this->assertEquals("childlist", $child->getName());
-        $child = $child->getChild(3);
+        $child = $child->getChild(1);
         $this->assertEquals("othername", $child->getName());
     }
 

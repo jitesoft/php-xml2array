@@ -80,21 +80,21 @@ class Node {
     }
 
     /**
-     * Get all children in the node.
+     * Get children in the node.
      *
-     * Observe: If only fetching children with a given name, the keys will not be modified.
-     * This means that it will not be a indexed array (0-n) but a key value array where keys are the indexes that
-     * the nodes had in the xml.
      * @param null|string $name Node name of the children to get, defaults to null (all).
-     * @return array|Node[]
+     * @param bool $preserveKeys
+     * @return array
      */
-    public function getChildren(?string $name = null): array {
+    public function getChildren(?string $name = null, $preserveKeys = true): array {
         if ($name === null) {
             return $this->children;
         }
-        return array_filter($this->children, function(Node $child) use($name) {
+        $children = array_filter($this->children, function(Node $child) use($name) {
             return $child->getName() === $name;
         });
+
+        return $preserveKeys ? $children : array_values($children);
     }
 
     /**
@@ -195,5 +195,9 @@ class Node {
 
     function __toString() {
         return json_encode($this->toArray());
+    }
+
+    function __debugInfo() {
+        return $this->toArray();
     }
 }

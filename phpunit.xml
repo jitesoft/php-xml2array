@@ -10,8 +10,7 @@
          stopOnError="true"
          stopOnIncomplete="true"
          stopOnSkipped="true"
-         stopOnRisky="true"
-         syntaxCheck="true">
+         stopOnRisky="true">
     <testsuites>
         <testsuite name="Test suite">
             <directory>./tests/</directory>

@@ -18,9 +18,23 @@ class ParserTest extends TestCase {
     private static $invalid;
     private static $complex;
     private static $rootless;
+    private static $fragment;
 
     public static function setUpBeforeClass() {
         parent::setUpBeforeClass();
+
+        self::$fragment = <<< XML
+<?xml version="1.0"?>
+<catalog>
+   <book>
+      <author>Gambardella, Matthew</author>
+      <title>XML Developer's Guide</title>
+      <genre>Computer</genre>
+      <price>44.95</price>
+      <publish_date>2000-10-01</publish_date>
+      <description>An in-depth look at creating applications with XML.</description>
+   </book>  
+XML;
 
         self::$valid = <<< XML
 <?xml version="1.0"?>
@@ -211,6 +225,18 @@ XML;
 
         $parser = new Parser();
         $parser->parse(self::$rootless);
+    }
+
+    public function testParseToInvalidType() {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("The outType \"Invalid\" does not exist.");
+        Parser::parseXml("", "Invalid");
+    }
+
+    public function testParseFragment() {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage("The supplied XML is invalid.");
+        Parser::parseXml(self::$fragment);
     }
 
 }

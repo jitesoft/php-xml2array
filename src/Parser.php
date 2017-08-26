@@ -39,14 +39,10 @@ class Parser implements ParserInterface {
      * @throws InvalidArgumentException
      */
     public function parse(string $data, $outType = self::OUT_TYPE_OBJECT) {
-        switch ($outType) {
-            case self::OUT_TYPE_ARRAY:
-            case self::OUT_TYPE_JSON:
-            case self::OUT_TYPE_OBJECT:
-            break;
-            default:
-                throw new InvalidArgumentException("The outType \"$outType\" does not exist.");
+        if ($outType !== self::OUT_TYPE_ARRAY && $outType !== self::OUT_TYPE_JSON && $outType !== self::OUT_TYPE_OBJECT) {
+            throw new InvalidArgumentException("The outType \"$outType\" does not exist.");
         }
+
         $this->innerParse($data);
         // There are three types of tags in the array: open, close and complete.
         // Open is the open tag <>, close is the end tag </> and complete is a tag without children.
@@ -61,8 +57,6 @@ class Parser implements ParserInterface {
                 break;
             case self::OUT_TYPE_OBJECT:
                 break;
-            default:
-                throw new InvalidArgumentException("The outType \"$outType\" does not exist.");
         }
 
         return $root;

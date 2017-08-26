@@ -6,8 +6,10 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 namespace Jitesoft\XML\Tests;
 
+use InvalidArgumentException;
 use Jitesoft\XML\Node;
 use Jitesoft\XML\Parser;
+use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
 class NodeTest extends TestCase {
@@ -144,5 +146,24 @@ XML;
         $this->assertEquals("1", $child->getAttribute("id"));
         $this->assertEquals("-", $child->getContent());
         $this->assertEquals("Test", $otherchild->getContent());
+    }
+
+    public function testGetInvalidAttribute() {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Attribute with key \"invalid\" does not exist.");
+        $this->parsed->getAttribute("invalid");
+    }
+
+    public function testGetChildOutOfBounds() {
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage("Child with index 50 does not exist. Index was out of bounds.");
+        $child = $this->parsed->getChildByName('object');
+        $child->getChild(50);
+    }
+
+    public function testGetChildByInvalidName() {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Child with name "invalid" does not exist.');
+        $this->parsed->getChildByName("invalid");
     }
 }

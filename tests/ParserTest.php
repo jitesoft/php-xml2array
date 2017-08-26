@@ -6,6 +6,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 namespace Jitesoft\XML\Tests;
 
+use Exception;
 use InvalidArgumentException;
 use Jitesoft\XML\Node;
 use Jitesoft\XML\Parser;
@@ -16,7 +17,7 @@ class ParserTest extends TestCase {
     private static $valid;
     private static $invalid;
     private static $complex;
-
+    private static $rootless;
 
     public static function setUpBeforeClass() {
         parent::setUpBeforeClass();
@@ -72,6 +73,28 @@ XML;
     </object>
 </complex>
 XML;
+
+        self::$rootless = <<< XML
+<object id="abc123">
+    <childlist>
+        <child id="1">-</child>
+        <child id="2">!</child>
+        <child id="3">Test.</child>
+    </childlist>
+</object>
+<object id="321cba">
+    <childlist>
+        <child id="1" name="test">
+            <subchild att="abc">
+            <![CDATA[Hi.]]>
+            </subchild>
+        </child>
+        <child id="2">Test!</child>
+    </childlist>    
+</object>
+XML;
+
+
     }
 
 
@@ -180,6 +203,14 @@ XML;
         ]);
 
         $this->assertEquals($expected->toArray() ,$out->toArray());
+    }
+
+    public function testRootlessError() {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage("The supplied XML is invalid.");
+
+        $parser = new Parser();
+        $parser->parse(self::$rootless);
     }
 
 }

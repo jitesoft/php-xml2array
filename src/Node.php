@@ -1,6 +1,6 @@
 <?php
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-  Node.php - Part of the php-xml2array project.
+  Node.php - Part of the php-xml2struct project.
 
   © - Jitesoft 2017
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -159,7 +159,8 @@ class Node {
      * Get first child with a given name.
      *
      * @param string $name
-     * @return Node|null
+     * @return Node
+     * @throws InvalidArgumentException
      */
     public function getChildByName(string $name) : ?Node {
         foreach ($this->children as $child) {
@@ -167,7 +168,9 @@ class Node {
                 return $child;
             }
         }
-        return null;
+        throw new InvalidArgumentException(
+            sprintf('Child with name "%s" does not exist.', $name)
+        );
     }
 
     /**
@@ -193,11 +196,10 @@ class Node {
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     function __toString() {
         return json_encode($this->toArray());
-    }
-
-    function __debugInfo() {
-        return $this->toArray();
     }
 }

@@ -1,8 +1,8 @@
-[![Build Status](https://img.shields.io/travis/jitesoft/php-xml2array/master.svg?label=master)](https://travis-ci.org/jitesoft/php-datastructures)  
+[![Build Status](https://img.shields.io/travis/jitesoft/php-xml2array/master.svg?label=master)](https://travis-ci.org/jitesoft/php-xml2array)  
 
-[![Build Status](https://img.shields.io/travis/jitesoft/php-xml2array/develop.svg?label=develop)](https://travis-ci.org/jitesoft/php-datastructures)
+[![Build Status](https://img.shields.io/travis/jitesoft/php-xml2array/develop.svg?label=develop)](https://travis-ci.org/jitesoft/php-xml2array)
 
-[![Dependency Status](https://gemnasium.com/badges/github.com/jitesoft/php-xml2array.svg)](https://gemnasium.com/github.com/jitesoft/php-datastructures)
+[![Dependency Status](https://gemnasium.com/badges/github.com/jitesoft/php-xml2array.svg)](https://gemnasium.com/github.com/jitesoft/php-xml2array)
 
 # XML2Struct
 

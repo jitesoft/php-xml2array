@@ -26,42 +26,25 @@ class Parser implements ParserInterface {
 
     /**
      * @param string $data XML as string.
-     * @param string $outType Expected out type (see constants OUT_TYPE_* for valid types).
      * @return string|array|Node
      * @throws InvalidArgumentException
      */
-    public static function parseXml(string $data, $outType = self::OUT_TYPE_OBJECT) {
-        return (new Parser())->parse($data, $outType);
+    public static function parseXml(string $data) {
+        return (new Parser())->parse($data);
     }
 
     /**
      * @param string $data XML as string.
-     * @param string $outType Expected out type (see constants OUT_TYPE_* for valid types).
-     * @return string|array|Node
-     * @throws InvalidArgumentException|XmlException
+     * @return Node
+     * @throws XmlException
      */
-    public function parse(string $data, $outType = self::OUT_TYPE_OBJECT) {
-        if ($outType !== self::OUT_TYPE_ARRAY && $outType !== self::OUT_TYPE_JSON && $outType !== self::OUT_TYPE_OBJECT) {
-            throw new InvalidArgumentException("The outType \"$outType\" does not exist.");
-        }
+    public function parse(string $data) {
 
         $this->innerParse($data);
         // There are three types of tags in the array: open, close and complete.
         // Open is the open tag <>, close is the end tag </> and complete is a tag without children.
         // The data is stored in a single dimensional array, so parsing is pretty straight forward.
-        $root = $this->buildNodeTree();
-        switch ($outType) {
-            case self::OUT_TYPE_ARRAY:
-                $root = $root->toArray();
-                break;
-            case self::OUT_TYPE_JSON:
-                $root = $root->toJson();
-                break;
-            case self::OUT_TYPE_OBJECT:
-                break;
-        }
-
-        return $root;
+        return $this->buildNodeTree();
     }
 
     /**

@@ -128,22 +128,17 @@ XML;
         $this->assertEquals(1, $out->childCount());
     }
 
-    public function testParseValidWithInvalidOutType() {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("The outType \"test\" does not exist.");
+    public function testToJson() {
         $parser = new Parser();
-        $parser->parse(self::$valid, "test");
-    }
-
-    public function testParseToJson() {
-        $parser = new Parser();
-        $out = $parser->parse(self::$valid, Parser::OUT_TYPE_JSON);
+        $out = $parser->parse(self::$valid);
+        $out = json_encode($out);
         $this->assertJsonStringEqualsJsonString('{"name":"catalog","content":"","attributes":[],"children":[{"name":"book","content":"","attributes":[],"children":[{"name":"author","content":"Gambardella, Matthew","attributes":[],"children":[]},{"name":"title","content":"XML Developer\'s Guide","attributes":[],"children":[]},{"name":"genre","content":"Computer","attributes":[],"children":[]},{"name":"price","content":"44.95","attributes":[],"children":[]},{"name":"publish_date","content":"2000-10-01","attributes":[],"children":[]},{"name":"description","content":"An in-depth look at creating applications with XML.","attributes":[],"children":[]}]}]}', $out);
     }
 
-    public function testParseToArray() {
+    public function testToArray() {
         $parser = new Parser();
-        $out = $parser->parse(self::$valid, Parser::OUT_TYPE_ARRAY);
+        $out = $parser->parse(self::$valid);
+        $out = $out->toArray();
         $this->assertTrue(is_array($out));
 
         $this->assertEquals($out,
@@ -169,9 +164,9 @@ XML;
             ], true);
     }
 
-    public function testParseToObject() {
+    public function testParse() {
         $parser = new Parser();
-        $out = $parser->parse(self::$valid, Parser::OUT_TYPE_OBJECT);
+        $out = $parser->parse(self::$valid);
 
         $this->assertEquals(
             new Node(
@@ -225,12 +220,6 @@ XML;
 
         $parser = new Parser();
         $parser->parse(self::$rootless);
-    }
-
-    public function testParseToInvalidType() {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("The outType \"Invalid\" does not exist.");
-        Parser::parseXml("", "Invalid");
     }
 
     public function testParseFragment() {

@@ -6,6 +6,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 namespace Jitesoft\XML;
 
+use JsonSerializable;
 use OutOfBoundsException;
 use InvalidArgumentException;
 
@@ -13,7 +14,7 @@ use InvalidArgumentException;
  * Class Node.
  * Object representation of a Node.
  */
-class Node {
+class Node implements JsonSerializable {
 
     /** @var string */
     private $name;
@@ -42,6 +43,7 @@ class Node {
 
     /**
      * Element constructor.
+     *
      * @param string $name
      * @param string $content
      * @param array $attributes
@@ -174,14 +176,6 @@ class Node {
     }
 
     /**
-     * Convert the node and its sub-tree into a json string.
-     * @return string
-     */
-    public function toJson(): string {
-        return (string)$this;
-    }
-
-    /**
      * Convert the node and its sub-tree into an array (without element objects).
      * @return array
      */
@@ -197,9 +191,13 @@ class Node {
     }
 
     /**
-     * {@inheritdoc}
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
      */
-    function __toString() {
-        return json_encode($this->toArray());
+    public function jsonSerialize() {
+        return $this->toArray();
     }
 }

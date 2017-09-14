@@ -33,6 +33,8 @@ $json   = json_encode($out);
 $array  = $out->toArray();
 ```
 
+*For more in-depth examples, check the `examples` folder.*  
+
 The object returned is a `Jitesoft\XML\Node` structure.  
 The structure have the following fields defined:
 

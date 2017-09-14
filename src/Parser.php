@@ -9,6 +9,8 @@ namespace Jitesoft\XML;
 use DOMDocument;
 use Exception;
 use InvalidArgumentException;
+use Jitesoft\Exceptions\XmlExceptions\XmlException;
+use Jitesoft\Exceptions\XmlExceptions\XmlParseException;
 
 /**
  * Class Parser
@@ -36,7 +38,7 @@ class Parser implements ParserInterface {
      * @param string $data XML as string.
      * @param string $outType Expected out type (see constants OUT_TYPE_* for valid types).
      * @return string|array|Node
-     * @throws InvalidArgumentException
+     * @throws InvalidArgumentException|XmlException
      */
     public function parse(string $data, $outType = self::OUT_TYPE_OBJECT) {
         if ($outType !== self::OUT_TYPE_ARRAY && $outType !== self::OUT_TYPE_JSON && $outType !== self::OUT_TYPE_OBJECT) {
@@ -64,14 +66,14 @@ class Parser implements ParserInterface {
 
     /**
      * @param string $data
-     * @throws Exception
+     * @throws XmlParseException
      */
     private function innerParse(string $data) {
         // Validate the xml file with libxml and the DOMDocument class...
         try {
             (new DOMDocument())->loadXML($data);
         } catch (Exception $ex) {
-            throw new Exception("The supplied XML is invalid.",0, $ex);
+            throw new XmlParseException("The supplied XML is invalid.", $data, null, null, 0, $ex);
         }
 
         $parser = xml_parser_create();
@@ -96,7 +98,8 @@ class Parser implements ParserInterface {
         }
 
         if ($root['type'] !== self::OPEN) {
-            throw new Exception("Unexpected error");
+            // This should never happen!
+            throw new XmlException();
         }
 
         $children = [];

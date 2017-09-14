@@ -6,8 +6,8 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 namespace Jitesoft\XML\Tests;
 
-use Exception;
 use InvalidArgumentException;
+use Jitesoft\Exceptions\XmlExceptions\XmlParseException;
 use Jitesoft\XML\Node;
 use Jitesoft\XML\Parser;
 use PHPUnit\Framework\TestCase;
@@ -33,7 +33,7 @@ class ParserTest extends TestCase {
       <price>44.95</price>
       <publish_date>2000-10-01</publish_date>
       <description>An in-depth look at creating applications with XML.</description>
-   </book>  
+   </book>
 XML;
 
         self::$valid = <<< XML
@@ -113,7 +113,7 @@ XML;
 
 
     public function testParseInvalidXml() {
-        $this->expectException(\Exception::class);
+        $this->expectException(XmlParseException::class);
         $this->expectExceptionMessage("The supplied XML is invalid.");
         $parser = new Parser();
         $parser->parse(self::$invalid);
@@ -220,7 +220,7 @@ XML;
     }
 
     public function testRootlessError() {
-        $this->expectException(Exception::class);
+        $this->expectException(XmlParseException::class);
         $this->expectExceptionMessage("The supplied XML is invalid.");
 
         $parser = new Parser();
@@ -234,7 +234,7 @@ XML;
     }
 
     public function testParseFragment() {
-        $this->expectException(Exception::class);
+        $this->expectException(XmlParseException::class);
         $this->expectExceptionMessage("The supplied XML is invalid.");
         Parser::parseXml(self::$fragment);
     }
